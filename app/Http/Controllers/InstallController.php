@@ -50,6 +50,8 @@ class InstallController extends Controller
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', ''),
             'username' => env('DB_USERNAME', ''),
+            'mail_from_address' => env('MAIL_FROM_ADDRESS', ''),
+            'mail_from_name' => env('MAIL_FROM_NAME', 'MeetingMan'),
         ];
 
         return view('install.database', compact('currentConfig'));
@@ -71,6 +73,8 @@ class InstallController extends Controller
             'db_database' => 'required|string',
             'db_username' => 'required|string',
             'db_password' => 'nullable|string',
+            'mail_from_address' => 'required|email',
+            'mail_from_name' => 'required|string|max:255',
         ]);
 
         // Test the connection
@@ -108,6 +112,9 @@ class InstallController extends Controller
             'DB_DATABASE' => $request->db_database,
             'DB_USERNAME' => $request->db_username,
             'DB_PASSWORD' => $request->db_password ?? '',
+            'MAIL_MAILER' => 'sendmail',
+            'MAIL_FROM_ADDRESS' => $request->mail_from_address,
+            'MAIL_FROM_NAME' => $request->mail_from_name,
         ]);
 
         // Clear config cache to pick up new values

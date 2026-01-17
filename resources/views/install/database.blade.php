@@ -43,11 +43,31 @@
                    placeholder="root">
         </div>
 
-        <div>
+        <div class="pb-4">
             <label for="db_password" class="block text-sm font-medium text-gray-700 mb-1">Database Password</label>
             <input type="password" name="db_password" id="db_password"
                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                    placeholder="Leave blank if no password">
+        </div>
+
+        <div class="pt-4 mt-4 border-t border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Email Configuration</h3>
+            <p class="text-gray-600 text-sm mb-4">Configure the email address used for sending notifications (password resets, etc.)</p>
+        </div>
+
+        <div>
+            <label for="mail_from_address" class="block text-sm font-medium text-gray-700 mb-1">From Email Address</label>
+            <input type="email" name="mail_from_address" id="mail_from_address" value="{{ old('mail_from_address', $currentConfig['mail_from_address']) }}"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                   placeholder="noreply@yourdomain.com">
+            <p class="mt-1 text-sm text-gray-500">Should match your domain for best deliverability</p>
+        </div>
+
+        <div>
+            <label for="mail_from_name" class="block text-sm font-medium text-gray-700 mb-1">From Name</label>
+            <input type="text" name="mail_from_name" id="mail_from_name" value="{{ old('mail_from_name', $currentConfig['mail_from_name']) }}"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                   placeholder="MeetingMan">
         </div>
 
         <div class="mt-8 flex justify-between">
