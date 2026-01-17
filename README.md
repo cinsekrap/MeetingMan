@@ -1,59 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MeetingMan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A one-on-one meeting management application for managers. Track your direct reports, record meetings, manage action items, and set objectives.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **People Management** - Track your direct reports with support for organisational hierarchy
+- **Meeting Records** - Document one-on-one meetings with structured topics (wins, challenges, actions, etc.)
+- **Action Tracking** - Create and track action items from meetings with due dates and status
+- **Objectives** - Set and monitor objectives for your team members
+- **Multi-Company Support** - Manage people across multiple companies/teams
+- **Admin Panel** - Super admin functionality for user management and audit logging
+- **Mobile Responsive** - Works on desktop and mobile devices
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2 or higher
+- MySQL 5.7+ or MariaDB 10.3+
+- Composer
+- Node.js & NPM
 
-## Learning Laravel
+### Required PHP Extensions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- BCMath
+- Ctype
+- Fileinfo
+- JSON
+- Mbstring
+- OpenSSL
+- PDO
+- PDO MySQL
+- Tokenizer
+- XML
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+### Option 1: Web Installer (No SSH Required)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. Download or clone the repository to your web server
+2. Run `composer install --no-dev --optimize-autoloader`
+3. Run `npm install && npm run build`
+4. Copy `.env.example` to `.env`
+5. Point your web server to the `public` directory
+6. Visit your site in a browser - you'll be redirected to the installer
+7. Follow the installation wizard to configure your database and create an admin account
 
-### Premium Partners
+### Option 2: Command Line
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/cinsekrap/MeetingMan.git
+   cd MeetingMan
+   ```
 
-## Contributing
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Install and build frontend assets:
+   ```bash
+   npm install
+   npm run build
+   ```
 
-## Code of Conduct
+4. Configure environment:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Edit `.env` with your database credentials:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=meetingman
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
 
-## Security Vulnerabilities
+6. Run migrations:
+   ```bash
+   php artisan migrate
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. Create storage symlink:
+   ```bash
+   php artisan storage:link
+   ```
+
+8. Create your first user by visiting the site and registering, then promote to super admin:
+   ```bash
+   php artisan tinker
+   >>> User::first()->update(['is_super_admin' => true]);
+   ```
+
+## Usage
+
+1. **Register/Login** - Create an account or log in
+2. **Create a Company** - Set up your first company/team
+3. **Add People** - Add your direct reports
+4. **Record Meetings** - Document your one-on-ones
+5. **Track Actions** - Manage action items and follow-ups
+6. **Set Objectives** - Create and monitor team objectives
+
+## Configuration
+
+Key environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `APP_NAME` | Application name | MeetingMan |
+| `APP_ENV` | Environment (local/production) | production |
+| `APP_DEBUG` | Enable debug mode | false |
+| `APP_URL` | Your application URL | http://localhost |
+| `DB_*` | Database configuration | MySQL |
+| `MAIL_*` | Email configuration | SMTP |
+
+## Development
+
+For local development:
+
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Run development server
+npm run dev
+
+# In another terminal
+php artisan serve
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software.
+
+## Built With
+
+- [Laravel](https://laravel.com) - PHP Framework
+- [Tailwind CSS](https://tailwindcss.com) - CSS Framework
+- [Alpine.js](https://alpinejs.dev) - JavaScript Framework
