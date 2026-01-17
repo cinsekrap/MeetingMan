@@ -48,9 +48,10 @@
                             </div>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-xl font-semibold text-gray-900">End-to-End Encryption</h2>
+                            <h2 class="text-xl font-semibold text-gray-900">Encryption at Rest</h2>
                             <p class="mt-2 text-gray-600">
-                                Your sensitive data is encrypted at the field level using AES-256-CBC encryption. This includes:
+                                Your sensitive data is encrypted before it's stored in the database using AES-256-CBC encryption.
+                                Even if the database were compromised, your confidential information remains unreadable. This includes:
                             </p>
                             <ul class="mt-3 space-y-2 text-gray-600">
                                 <li class="flex items-center">
