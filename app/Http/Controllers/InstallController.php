@@ -45,6 +45,7 @@ class InstallController extends Controller
         }
 
         $currentConfig = [
+            'app_url' => env('APP_URL', 'https://'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', ''),
@@ -64,6 +65,7 @@ class InstallController extends Controller
         }
 
         $request->validate([
+            'app_url' => 'required|url',
             'db_host' => 'required|string',
             'db_port' => 'required|numeric',
             'db_database' => 'required|string',
@@ -91,8 +93,16 @@ class InstallController extends Controller
             return back()->withErrors(['database' => 'Could not connect to database: ' . $e->getMessage()])->withInput();
         }
 
+        // Generate APP_KEY if not set
+        $appKey = env('APP_KEY');
+        if (empty($appKey)) {
+            $appKey = 'base64:' . base64_encode(random_bytes(32));
+        }
+
         // Update .env file
         $this->updateEnvFile([
+            'APP_URL' => rtrim($request->app_url, '/'),
+            'APP_KEY' => $appKey,
             'DB_HOST' => $request->db_host,
             'DB_PORT' => $request->db_port,
             'DB_DATABASE' => $request->db_database,
@@ -213,6 +223,13 @@ class InstallController extends Controller
             if (empty(env('APP_KEY'))) {
                 Artisan::call('key:generate', ['--force' => true]);
             }
+
+            // Switch to database-backed sessions and cache now that DB is configured
+            $this->updateEnvFile([
+                'SESSION_DRIVER' => 'database',
+                'CACHE_STORE' => 'database',
+                'APP_DEBUG' => 'false',
+            ]);
 
             // Cache configuration for production
             Artisan::call('config:cache');

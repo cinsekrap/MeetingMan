@@ -43,7 +43,7 @@
                     @php
                         $steps = [
                             'requirements' => 'Requirements',
-                            'database' => 'Database',
+                            'database' => 'Configure',
                             'migrate' => 'Migrate',
                             'admin' => 'Admin User',
                             'finalize' => 'Finalize',

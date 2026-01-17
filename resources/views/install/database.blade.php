@@ -1,11 +1,19 @@
 @extends('install.layout', ['currentStep' => 'database'])
 
 @section('content')
-    <h2 class="text-xl font-semibold text-gray-900 mb-4">Database Configuration</h2>
-    <p class="text-gray-600 mb-6">Enter your database connection details. Make sure the database exists before continuing.</p>
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Environment Configuration</h2>
+    <p class="text-gray-600 mb-6">Configure your site URL and database connection details.</p>
 
     <form method="POST" action="{{ route('install.database.save') }}" class="space-y-4">
         @csrf
+
+        <div class="pb-4 mb-4 border-b border-gray-200">
+            <label for="app_url" class="block text-sm font-medium text-gray-700 mb-1">Site URL</label>
+            <input type="url" name="app_url" id="app_url" value="{{ old('app_url', $currentConfig['app_url']) }}"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                   placeholder="https://www.example.com">
+            <p class="mt-1 text-sm text-gray-500">The full URL where MeetingMan will be accessed (include https://)</p>
+        </div>
 
         <div>
             <label for="db_host" class="block text-sm font-medium text-gray-700 mb-1">Database Host</label>
