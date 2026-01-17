@@ -9,6 +9,7 @@
                 <a href="{{ route('admin.companies.index') }}" class="text-sm text-purple-600 hover:text-purple-800">Companies</a>
                 <a href="{{ route('admin.audit-logs.index') }}" class="text-sm text-purple-600 hover:text-purple-800">Audit Logs</a>
                 <a href="{{ route('admin.branding.index') }}" class="text-sm text-purple-600 hover:text-purple-800">Branding</a>
+                <a href="{{ route('admin.updates.index') }}" class="text-sm text-purple-600 hover:text-purple-800">Updates</a>
             </div>
         </div>
     </x-slot>

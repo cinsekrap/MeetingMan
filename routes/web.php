@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminAuditLogController;
 use App\Http\Controllers\Admin\AdminBrandingController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminUpdateController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\CompanyController;
@@ -161,6 +162,11 @@ Route::middleware(['auth', 'super_admin'])->prefix('admin')->name('admin.')->gro
     Route::get('/branding', [AdminBrandingController::class, 'index'])->name('branding.index');
     Route::put('/branding', [AdminBrandingController::class, 'update'])->name('branding.update');
     Route::delete('/branding/logo', [AdminBrandingController::class, 'removeLogo'])->name('branding.remove-logo');
+
+    // Updates
+    Route::get('/updates', [AdminUpdateController::class, 'index'])->name('updates.index');
+    Route::post('/updates/check', [AdminUpdateController::class, 'check'])->name('updates.check');
+    Route::post('/updates/apply', [AdminUpdateController::class, 'apply'])->name('updates.apply');
 });
 
 require __DIR__.'/auth.php';
