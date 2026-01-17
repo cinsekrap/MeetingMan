@@ -52,6 +52,18 @@ A Laravel 12 application for tracking 1:1 meetings, actions, and objectives with
 - Rate limiting on auth routes (5 attempts/min login, 3 attempts/min password reset)
 - 2FA via Laravel Fortify with TOTP
 
+### Admin Panel
+- User management (suspend, promote/demote, force password reset)
+- Company management
+- Audit logs for admin actions
+- Branding settings (custom logo, site name)
+- **Auto-updater** - Check and install updates from GitHub without SSH
+
+### UI/UX
+- Marketing-style login page with feature highlights
+- Footer with site name and version number
+- Responsive design throughout
+
 ### Email
 - `MeetingSummary` Mailable class
 - Markdown email template at `resources/views/emails/meeting-summary.blade.php`
@@ -81,6 +93,71 @@ A Laravel 12 application for tracking 1:1 meetings, actions, and objectives with
 - [ ] Set up database via hosting panel
 - [ ] Configure mail provider (Mailgun, Postmark, etc.)
 - [ ] Run `php artisan security:encrypt-existing-data` if migrating data
+
+---
+
+## Releasing Updates
+
+MeetingMan includes a built-in auto-updater that allows admins to update from the Admin panel without SSH access.
+
+### Release Workflow
+
+1. **Make your changes** and test locally
+
+2. **Update the VERSION file** in the project root:
+   ```bash
+   echo "1.0.4" > VERSION
+   ```
+
+3. **Commit and push**:
+   ```bash
+   git add -A
+   git commit -m "Description of changes
+
+   Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
+   git push
+   ```
+
+4. **Create a GitHub release** using the `gh` CLI:
+   ```bash
+   gh release create v1.0.4 --title "v1.0.4" --notes "## What's New
+
+   - Feature or fix description here"
+   ```
+
+### How the Auto-Updater Works
+
+- Located at **Admin > Updates** (super admin only)
+- Checks GitHub API for latest release: `https://api.github.com/repos/cinsekrap/MeetingMan/releases/latest`
+- Downloads release zip from GitHub
+- Extracts and copies files while preserving protected paths
+- Clears all Laravel caches after update
+
+### Protected Paths (never overwritten)
+
+These files/directories are preserved during updates:
+- `.env` - Environment configuration
+- `storage/installed` - Installation marker
+- `storage/logs/*` - Log files
+- `storage/app/*` - Uploaded files (logos, etc.)
+- `storage/framework/sessions/*` - User sessions
+- `storage/framework/cache/*` - Cache data
+- `storage/framework/views/*` - Compiled views
+- `bootstrap/cache/*` - Compiled app cache
+
+### Key Files for Auto-Updater
+
+- `VERSION` - Current version number (e.g., "1.0.3")
+- `app/Services/UpdateService.php` - Core update logic
+- `app/Http/Controllers/Admin/AdminUpdateController.php` - Admin UI controller
+- `resources/views/admin/updates/index.blade.php` - Update UI
+
+### Important Notes
+
+- Version numbers must follow semver (e.g., 1.0.0, 1.0.1, 1.2.0)
+- GitHub release tags must be prefixed with `v` (e.g., v1.0.3)
+- The layout requires `@stack('scripts')` before `</body>` for JS to work
+- Update actions are logged via AdminAuditService
 
 ---
 
@@ -147,4 +224,4 @@ Currently set to `MAIL_MAILER=log` - emails appear in `storage/logs/laravel.log`
 
 ---
 
-*Last updated: January 2026*
+*Last updated: 17 January 2026*

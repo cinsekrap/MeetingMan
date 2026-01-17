@@ -208,6 +208,46 @@ Add to crontab (`crontab -e`):
 
 ---
 
+## Updating MeetingMan
+
+### Via Admin Panel (Recommended)
+
+MeetingMan includes a built-in auto-updater for easy updates without SSH access.
+
+1. Log in as a super admin
+2. Go to **Admin > Updates**
+3. Click **Check for Updates**
+4. If an update is available, review the changelog
+5. Click **Install Update**
+6. Refresh the page when complete
+
+The updater automatically:
+- Downloads the latest release from GitHub
+- Preserves your `.env`, database, uploaded files, and logs
+- Clears all caches after updating
+
+### Manual Update (if needed)
+
+If the auto-updater isn't working (e.g., first-time setup from older version):
+
+1. Download the latest release from GitHub
+2. Extract and upload files via File Manager or SFTP
+3. **Do NOT overwrite:**
+   - `.env`
+   - `vendor/` folder
+   - `storage/` folder contents (except you can overwrite `storage/framework/.gitignore` files)
+4. Ensure `storage/framework/views/`, `storage/framework/cache/`, and `storage/framework/sessions/` directories exist
+
+### Via SSH (if available)
+
+```bash
+cd ~/public_html
+git pull origin main
+./deploy.sh
+```
+
+---
+
 ## Security Checklist
 
 - [ ] `APP_DEBUG=false` in production
