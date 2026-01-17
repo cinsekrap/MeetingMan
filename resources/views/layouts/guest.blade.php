@@ -23,11 +23,11 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex brand-gradient">
             <!-- Left side - Info -->
-            <div class="hidden lg:flex lg:w-1/2 flex-col justify-center px-12 xl:px-24">
-                <h1 class="text-4xl xl:text-5xl font-bold text-white mb-6">
+            <div class="hidden md:flex md:w-1/2 flex-col justify-center px-8 lg:px-12 xl:px-24">
+                <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6">
                     {{ \App\Models\SiteSetting::get('site_name', 'MeetingMan') }}
                 </h1>
-                <p class="text-xl text-purple-100 mb-8">
+                <p class="text-lg lg:text-xl text-purple-100 mb-8">
                     The simple way to manage your 1:1 meetings and keep your team on track.
                 </p>
                 <ul class="space-y-4">
@@ -59,8 +59,8 @@
             </div>
 
             <!-- Right side - Login form -->
-            <div class="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 py-12">
-                <div class="lg:hidden mb-8 text-center">
+            <div class="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12">
+                <div class="md:hidden mb-8 text-center">
                     <h1 class="text-3xl font-bold text-white mb-2">
                         {{ \App\Models\SiteSetting::get('site_name', 'MeetingMan') }}
                     </h1>
