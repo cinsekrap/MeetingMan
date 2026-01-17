@@ -70,6 +70,10 @@
                 <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-xl overflow-hidden rounded-lg">
                     {{ $slot }}
                 </div>
+
+                <a href="{{ route('security') }}" class="mt-6 text-purple-200 hover:text-white text-sm">
+                    How we keep your data safe &rarr;
+                </a>
             </div>
         </div>
     </body>

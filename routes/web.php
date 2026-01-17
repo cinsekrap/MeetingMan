@@ -45,6 +45,11 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+// Public pages
+Route::get('/security', function () {
+    return view('security');
+})->name('security');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
