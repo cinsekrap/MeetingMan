@@ -24,9 +24,15 @@
         <div class="min-h-screen flex brand-gradient">
             <!-- Left side - Info -->
             <div class="hidden md:flex md:w-1/2 flex-col justify-center px-8 lg:px-12 xl:px-24">
-                <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6">
-                    {{ \App\Models\SiteSetting::get('site_name', 'MeetingMan') }}
-                </h1>
+                <div class="mb-6">
+                    @if($logoUrl = \App\Models\SiteSetting::logoUrl())
+                        <img src="{{ $logoUrl }}" alt="{{ \App\Models\SiteSetting::siteName() }}" class="h-12 lg:h-14 xl:h-16 max-w-[280px] object-contain">
+                    @else
+                        <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white">
+                            {{ \App\Models\SiteSetting::siteName() }}
+                        </h1>
+                    @endif
+                </div>
                 <p class="text-lg lg:text-xl text-purple-100 mb-8">
                     The simple way to manage your 1:1 meetings and keep your team on track.
                 </p>
@@ -61,9 +67,13 @@
             <!-- Right side - Login form -->
             <div class="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12">
                 <div class="md:hidden mb-8 text-center">
-                    <h1 class="text-3xl font-bold text-white mb-2">
-                        {{ \App\Models\SiteSetting::get('site_name', 'MeetingMan') }}
-                    </h1>
+                    @if($logoUrl = \App\Models\SiteSetting::logoUrl())
+                        <img src="{{ $logoUrl }}" alt="{{ \App\Models\SiteSetting::siteName() }}" class="h-10 max-w-[200px] object-contain mx-auto mb-2">
+                    @else
+                        <h1 class="text-3xl font-bold text-white mb-2">
+                            {{ \App\Models\SiteSetting::siteName() }}
+                        </h1>
+                    @endif
                     <p class="text-purple-100">Manage your 1:1 meetings with ease</p>
                 </div>
 
