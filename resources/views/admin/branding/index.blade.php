@@ -29,15 +29,11 @@
                             <p class="text-sm text-gray-500 mb-2">Current logo:</p>
                             <div class="flex items-center space-x-4">
                                 <div class="bg-gray-800 p-3 rounded-lg">
-                                    <img src="{{ asset('storage/' . $logoPath) }}" alt="Current logo" class="h-10 max-w-[200px] object-contain">
+                                    <img src="{{ asset($logoPath) }}" alt="Current logo" class="h-10 max-w-[200px] object-contain">
                                 </div>
-                                <form method="POST" action="{{ route('admin.branding.remove-logo') }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-sm text-red-600 hover:text-red-800" onclick="return confirm('Remove the logo?')">
-                                        Remove logo
-                                    </button>
-                                </form>
+                                <button type="button" onclick="document.getElementById('remove-logo-form').submit()" class="text-sm text-red-600 hover:text-red-800">
+                                    Remove logo
+                                </button>
                             </div>
                         </div>
                     @else
@@ -49,7 +45,7 @@
                     <div>
                         <x-input-label for="logo" :value="__('Upload new logo')" />
                         <input type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/jpg,image/svg+xml" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100" />
-                        <p class="mt-1 text-sm text-gray-500">PNG, JPG, or SVG. Max 2MB. Recommended height: 40px.</p>
+                        <p class="mt-1 text-sm text-gray-500">PNG, JPG, or SVG. Max 2MB. Recommended: 200x40px (or similar aspect ratio).</p>
                         <x-input-error :messages="$errors->get('logo')" class="mt-2" />
                     </div>
 
@@ -57,7 +53,7 @@
                         <p class="text-sm font-medium text-gray-700 mb-2">Preview:</p>
                         <div class="bg-gradient-to-r from-purple-600 to-purple-800 p-4 rounded-lg">
                             @if($logoPath)
-                                <img src="{{ asset('storage/' . $logoPath) }}" alt="Logo preview" class="h-8 object-contain">
+                                <img src="{{ asset($logoPath) }}" alt="Logo preview" class="h-8 object-contain">
                             @else
                                 <span class="text-white font-bold text-xl">{{ $siteName }}</span>
                             @endif
@@ -82,6 +78,14 @@
                     <x-primary-button>Save Changes</x-primary-button>
                 </div>
             </form>
+
+            {{-- Separate form for removing logo (outside main form to avoid nesting) --}}
+            @if($logoPath)
+                <form id="remove-logo-form" method="POST" action="{{ route('admin.branding.remove-logo') }}" class="hidden" onsubmit="return confirm('Remove the logo?')">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endif
         </div>
     </div>
 </x-app-layout>

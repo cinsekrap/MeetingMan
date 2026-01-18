@@ -39,7 +39,7 @@ class SiteSetting extends Model
     public static function logoUrl(): ?string
     {
         $path = static::get('logo_path');
-        return $path ? asset('storage/' . $path) : null;
+        return $path ? asset($path) : null;
     }
 
     /**

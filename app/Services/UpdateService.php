@@ -20,6 +20,7 @@ class UpdateService
         'storage/framework/sessions',
         'storage/framework/views',
         'bootstrap/cache',
+        'public/branding',
     ];
 
     public function getCurrentVersion(): string

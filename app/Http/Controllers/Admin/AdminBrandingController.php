@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 
 class AdminBrandingController extends Controller
@@ -35,13 +35,25 @@ class AdminBrandingController extends Controller
         if ($request->hasFile('logo')) {
             // Delete old logo if exists
             $oldLogo = SiteSetting::get('logo_path');
-            if ($oldLogo && Storage::disk('public')->exists($oldLogo)) {
-                Storage::disk('public')->delete($oldLogo);
+            if ($oldLogo) {
+                $oldPath = public_path($oldLogo);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
 
-            // Store new logo
-            $path = $request->file('logo')->store('branding', 'public');
-            SiteSetting::set('logo_path', $path);
+            // Ensure branding directory exists
+            $brandingDir = public_path('branding');
+            if (!File::isDirectory($brandingDir)) {
+                File::makeDirectory($brandingDir, 0755, true);
+            }
+
+            // Store new logo directly in public/branding/
+            $file = $request->file('logo');
+            $filename = 'logo-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($brandingDir, $filename);
+
+            SiteSetting::set('logo_path', 'branding/' . $filename);
         }
 
         return redirect()->route('admin.branding.index')
@@ -52,8 +64,11 @@ class AdminBrandingController extends Controller
     {
         $logoPath = SiteSetting::get('logo_path');
 
-        if ($logoPath && Storage::disk('public')->exists($logoPath)) {
-            Storage::disk('public')->delete($logoPath);
+        if ($logoPath) {
+            $fullPath = public_path($logoPath);
+            if (File::exists($fullPath)) {
+                File::delete($fullPath);
+            }
         }
 
         SiteSetting::set('logo_path', null);
