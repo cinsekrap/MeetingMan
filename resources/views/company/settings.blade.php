@@ -51,11 +51,19 @@
                 @if($pendingInvites->isNotEmpty())
                     <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                         <p class="text-sm font-medium text-yellow-800 mb-2">Pending Invitations</p>
-                        <div class="space-y-1">
+                        <div class="space-y-2">
                             @foreach($pendingInvites as $invite)
                                 <div class="flex items-center justify-between text-sm">
-                                    <span class="text-yellow-700">{{ $invite->email }}</span>
-                                    <span class="text-yellow-600 text-xs">Sent {{ $invite->created_at->diffForHumans() }}</span>
+                                    <div>
+                                        <span class="text-yellow-700">{{ $invite->email }}</span>
+                                        <span class="text-yellow-600 text-xs ml-2">Sent {{ $invite->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <form method="POST" action="{{ route('company.invites.resend', $invite) }}">
+                                        @csrf
+                                        <button type="submit" class="text-xs text-yellow-700 hover:text-yellow-900 underline">
+                                            Resend
+                                        </button>
+                                    </form>
                                 </div>
                             @endforeach
                         </div>
