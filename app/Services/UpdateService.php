@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Process;
 use ZipArchive;
 
 class UpdateService
@@ -166,6 +167,12 @@ class UpdateService
             // Update VERSION file
             File::put(base_path('VERSION'), ltrim($version, 'v') . "\n");
 
+            // Install updated Composer dependencies
+            $this->runComposerInstall();
+
+            // Run database migrations
+            $this->runMigrations();
+
             // Clear caches
             $this->clearCaches();
 
@@ -232,6 +239,47 @@ class UpdateService
         }
 
         return false;
+    }
+
+    protected function runComposerInstall(): void
+    {
+        try {
+            Log::info('Running composer install after update');
+
+            $result = Process::path(base_path())
+                ->timeout(300)
+                ->run('composer install --no-dev --optimize-autoloader --no-interaction 2>&1');
+
+            if ($result->successful()) {
+                Log::info('Composer install completed successfully');
+            } else {
+                Log::error('Composer install failed', [
+                    'exit_code' => $result->exitCode(),
+                    'output' => $result->output(),
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error running composer install', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    protected function runMigrations(): void
+    {
+        try {
+            Log::info('Running database migrations after update');
+
+            Artisan::call('migrate', ['--force' => true]);
+
+            Log::info('Migrations completed successfully', [
+                'output' => Artisan::output(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error running migrations', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     protected function clearCaches(): void
